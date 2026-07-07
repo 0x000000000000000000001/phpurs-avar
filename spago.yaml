@@ -1,0 +1,9 @@
+package:
+  name: avar
+  dependencies:
+    - aff
+    - effect
+    - either
+    - exceptions
+    - functions
+    - maybe
