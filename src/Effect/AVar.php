@@ -121,7 +121,7 @@ $takeHead = function($queue) {
     return $cell->value;
 };
 
-$deleteCell = function($cell) use (&$takeLast, &$takeHead) {
+$deleteCell = function($cell) use ($takeLast, $takeHead) {
     if ($cell->queue === null) {
         return;
     }
@@ -146,7 +146,7 @@ $deleteCell = function($cell) use (&$takeLast, &$takeHead) {
     $cell->prev  = null;
 };
 
-$drainVar = function($util, $avar) use (&$AVar_EMPTY, &$takeHead, &$runEff) {
+$drainVar = function($util, $avar) use ($AVar_EMPTY, $takeHead, $runEff) {
     if ($avar->draining) {
         return;
     }
@@ -205,7 +205,7 @@ $drainVar = function($util, $avar) use (&$AVar_EMPTY, &$takeHead, &$runEff) {
 };
 
 
-$exports['empty'] = function () use (&$AVar_EMPTY) {
+$exports['empty'] = function () use ($AVar_EMPTY) {
     return new AVar($AVar_EMPTY);
 };
 
@@ -215,8 +215,8 @@ $exports['_newVar'] = function ($value) {
     };
 };
 
-$exports['_killVar'] = function ($util, $error, $avar) use (&$AVar_EMPTY, &$drainVar) {
-    return function () use ($util, $error, $avar, &$AVar_EMPTY, &$drainVar) {
+$exports['_killVar'] = function ($util, $error, $avar) use ($AVar_EMPTY, $drainVar) {
+    return function () use ($util, $error, $avar, $AVar_EMPTY, $drainVar) {
         if ($avar->error === null) {
             $avar->error = $error;
             $avar->value = $AVar_EMPTY;
@@ -225,38 +225,38 @@ $exports['_killVar'] = function ($util, $error, $avar) use (&$AVar_EMPTY, &$drai
     };
 };
 
-$exports['_putVar'] = function ($util, $value, $avar, $cb) use (&$putLast, &$drainVar, &$deleteCell) {
-    return function () use ($util, $value, $avar, $cb, &$putLast, &$drainVar, &$deleteCell) {
+$exports['_putVar'] = function ($util, $value, $avar, $cb) use ($putLast, $drainVar, $deleteCell) {
+    return function () use ($util, $value, $avar, $cb, $putLast, $drainVar, $deleteCell) {
         $cell = $putLast($avar->puts, (object)['cb' => $cb, 'value' => $value]);
         $drainVar($util, $avar);
-        return function () use ($cell, &$deleteCell) {
+        return function () use ($cell, $deleteCell) {
             $deleteCell($cell);
         };
     };
 };
 
-$exports['_takeVar'] = function ($util, $avar, $cb) use (&$putLast, &$drainVar, &$deleteCell) {
-    return function () use ($util, $avar, $cb, &$putLast, &$drainVar, &$deleteCell) {
+$exports['_takeVar'] = function ($util, $avar, $cb) use ($putLast, $drainVar, $deleteCell) {
+    return function () use ($util, $avar, $cb, $putLast, $drainVar, $deleteCell) {
         $cell = $putLast($avar->takes, $cb);
         $drainVar($util, $avar);
-        return function () use ($cell, &$deleteCell) {
+        return function () use ($cell, $deleteCell) {
             $deleteCell($cell);
         };
     };
 };
 
-$exports['_readVar'] = function ($util, $avar, $cb) use (&$putLast, &$drainVar, &$deleteCell) {
-    return function () use ($util, $avar, $cb, &$putLast, &$drainVar, &$deleteCell) {
+$exports['_readVar'] = function ($util, $avar, $cb) use ($putLast, $drainVar, $deleteCell) {
+    return function () use ($util, $avar, $cb, $putLast, $drainVar, $deleteCell) {
         $cell = $putLast($avar->reads, $cb);
         $drainVar($util, $avar);
-        return function () use ($cell, &$deleteCell) {
+        return function () use ($cell, $deleteCell) {
             $deleteCell($cell);
         };
     };
 };
 
-$exports['_tryPutVar'] = function ($util, $value, $avar) use (&$AVar_EMPTY, &$drainVar) {
-    return function () use ($util, $value, $avar, &$AVar_EMPTY, &$drainVar) {
+$exports['_tryPutVar'] = function ($util, $value, $avar) use ($AVar_EMPTY, $drainVar) {
+    return function () use ($util, $value, $avar, $AVar_EMPTY, $drainVar) {
         if ($avar->value === $AVar_EMPTY && $avar->error === null) {
             $avar->value = $value;
             $drainVar($util, $avar);
@@ -267,8 +267,8 @@ $exports['_tryPutVar'] = function ($util, $value, $avar) use (&$AVar_EMPTY, &$dr
     };
 };
 
-$exports['_tryTakeVar'] = function ($util, $avar) use (&$AVar_EMPTY, &$drainVar) {
-    return function () use ($util, $avar, &$AVar_EMPTY, &$drainVar) {
+$exports['_tryTakeVar'] = function ($util, $avar) use ($AVar_EMPTY, $drainVar) {
+    return function () use ($util, $avar, $AVar_EMPTY, $drainVar) {
         $value = $avar->value;
         if ($value === $AVar_EMPTY) {
             return $util->nothing;
@@ -280,8 +280,8 @@ $exports['_tryTakeVar'] = function ($util, $avar) use (&$AVar_EMPTY, &$drainVar)
     };
 };
 
-$exports['_tryReadVar'] = function ($util, $avar) use (&$AVar_EMPTY) {
-    return function () use ($util, $avar, &$AVar_EMPTY) {
+$exports['_tryReadVar'] = function ($util, $avar) use ($AVar_EMPTY) {
+    return function () use ($util, $avar, $AVar_EMPTY) {
         if ($avar->value === $AVar_EMPTY) {
             return $util->nothing;
         } else {
@@ -290,8 +290,8 @@ $exports['_tryReadVar'] = function ($util, $avar) use (&$AVar_EMPTY) {
     };
 };
 
-$exports['_status'] = function ($util, $avar) use (&$AVar_EMPTY) {
-    return function () use ($util, $avar, &$AVar_EMPTY) {
+$exports['_status'] = function ($util, $avar) use ($AVar_EMPTY) {
+    return function () use ($util, $avar, $AVar_EMPTY) {
         if ($avar->error) {
             return $util->killed($avar->error);
         }
