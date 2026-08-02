@@ -1,0 +1,126 @@
+package:
+  name: avar
+  dependencies:
+    - aff
+    - effect
+    - either
+    - exceptions
+    - functions
+    - maybe
+
+  test:
+    main: Test.Main
+    dependencies:
+      - assert
+      - console
+      - effect
+      - exceptions
+      - partial
+      - st
+      - minibench
+      - arrays
+      - either
+      - foldable-traversable
+      - maybe
+      - prelude
+      - refs
+      - tailrec
+
+workspace:
+  packageSet:
+    registry: 77.7.0
+  extraPackages:
+    aff:
+      path: "../phpurs-aff"
+    argonaut-core:
+      path: "../phpurs-argonaut-core"
+    arrays:
+      path: "../phpurs-arrays"
+    assert:
+      path: "../phpurs-assert"
+    catenable-lists:
+      path: "../phpurs-catenable-lists"
+    console:
+      path: "../phpurs-console"
+    datetime:
+      path: "../phpurs-datetime"
+    effect:
+      path: "../phpurs-effect"
+    enums:
+      path: "../phpurs-enums"
+    exceptions:
+      path: "../phpurs-exceptions"
+    foldable-traversable:
+      path: "../phpurs-foldable-traversable"
+    foreign:
+      path: "../phpurs-foreign"
+    foreign-object:
+      path: "../phpurs-foreign-object"
+    free:
+      path: "../phpurs-free"
+    functions:
+      path: "../phpurs-functions"
+    integers:
+      path: "../phpurs-integers"
+    js-promise:
+      path: "../phpurs-js-promise"
+    js-promise-aff:
+      path: "../phpurs-js-promise-aff"
+    js-uri:
+      path: "../phpurs-js-uri"
+    lazy:
+      path: "../phpurs-lazy"
+    math:
+      path: "../phpurs-math"
+    node-event-emitter:
+      path: "../phpurs-node-event-emitter"
+    node-fs:
+      path: "../phpurs-node-fs"
+    node-http:
+      path: "../phpurs-node-http"
+    node-net:
+      path: "../phpurs-node-net"
+    node-path:
+      path: "../phpurs-node-path"
+    node-process:
+      path: "../phpurs-node-process"
+    node-streams:
+      path: "../phpurs-node-streams"
+    now:
+      path: "../phpurs-now"
+    nullable:
+      path: "../phpurs-nullable"
+    numbers:
+      path: "../phpurs-numbers"
+    partial:
+      path: "../phpurs-partial"
+    prelude:
+      path: "../phpurs-prelude"
+    random:
+      path: "../phpurs-random"
+    record:
+      path: "../phpurs-record"
+    refs:
+      path: "../phpurs-refs"
+    run:
+      path: "../phpurs-run"
+    simple-json:
+      path: "../phpurs-simple-json"
+    spec:
+      path: "../phpurs-spec"
+    st:
+      path: "../phpurs-st"
+    starter:
+      path: "../phpurs-starter"
+    strings:
+      path: "../phpurs-strings"
+    unfoldable:
+      path: "../phpurs-unfoldable"
+    unsafe-coerce:
+      path: "../phpurs-unsafe-coerce"
+    uuid:
+      path: "../phpurs-uuid"
+    variant:
+      path: "../phpurs-variant"
+    yoga-json:
+      path: "../phpurs-yoga-json"

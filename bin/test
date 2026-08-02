@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -e
+cd "$(dirname "$0")/.."
+
+# Remove cache for safety
+rm -rf output
+
+rm -f spago.yaml
+ln -s spago.php.yaml spago.yaml
+
+echo "=== Building project with spago ==="
+spago build || { echo "Spago build failed"; exit 1; }
+
+echo "=== Generating PHP code with phpurs ==="
+node ../phpurs/bin/phpurs.js --main Test.Main || exit 1
+
+echo "=== Running PHP test script ==="
+if [ -f "output/Test.Main/main.php" ]; then
+    php output/Test.Main/main.php
+else
+    echo "No output/Test.Main/main.php found."
+    exit 1
+fi
