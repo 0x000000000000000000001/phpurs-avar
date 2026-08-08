@@ -21,3 +21,5 @@ else
     echo "No output/Test.Main/main.php found."
     exit 1
 fi
+echo -e "
+✅ Tests passed successfully!"
