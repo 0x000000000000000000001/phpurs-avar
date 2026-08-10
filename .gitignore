@@ -15,3 +15,4 @@ package-lock.json
 *.lock
 .DS_Store
 .spago
+.psc-ide-port
