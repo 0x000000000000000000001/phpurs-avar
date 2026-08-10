@@ -2,6 +2,19 @@
 set -e
 cd "$(dirname "$0")/.."
 
+CLEAN=0
+for arg in "$@"; do
+  if [ "$arg" == "-c" ] || [ "$arg" == "--clean" ]; then
+    CLEAN=1
+  fi
+done
+
+if [ "$CLEAN" == "1" ]; then
+  COMPILER_DIR="../phpurs"
+  echo "=== Recompiling ${COMPILER_DIR} ==="
+  (cd "${COMPILER_DIR}" && npm run build) || { echo "Compiler build failed"; exit 1; }
+fi
+
 # Remove cache for safety
 rm -rf output
 
