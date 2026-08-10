@@ -15,10 +15,10 @@ echo "=== Generating PHP code with phpurs ==="
 node ../phpurs/bin/phpurs.js --main Test.Main || exit 1
 
 echo "=== Running PHP test script ==="
-if [ -f "output/Test.Main/main.php" ]; then
-    php output/Test.Main/main.php
+if [ -f "output/Test.Main/main.mod.php" ]; then
+    php output/Test.Main/main.mod.php
 else
-    echo "No output/Test.Main/main.php found."
+    echo "No output/Test.Main/main.mod.php found."
     exit 1
 fi
 echo -e "
