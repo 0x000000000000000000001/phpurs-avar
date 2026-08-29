@@ -25,7 +25,7 @@ echo "=== Building project with spago ==="
 spago build || { echo "Spago build failed"; exit 1; }
 
 echo "=== Generating PHP code with phpurs ==="
-node ../phpurs/bin/phpurs.js --main Test.Main || exit 1
+../phpurs/bin/phpurs --main Test.Main || exit 1
 
 echo "=== Running PHP test script ==="
 if [ -f "output/Test.Main/main.mod.php" ]; then
