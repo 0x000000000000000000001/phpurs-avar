@@ -13,8 +13,8 @@ class AVarMutableCell {
     public $prev = null;
     
     public function __construct($queue, $value) {
-        $this->queue = queue;
-        $this->value = value;
+        $this->queue = $queue;
+        $this->value = $value;
     }
 }
 
@@ -29,7 +29,7 @@ class AVar {
     public $puts;
 
     public function __construct($value) {
-        $this->value = value;
+        $this->value = $value;
         $this->takes = new AVarMutableQueue();
         $this->reads = new AVarMutableQueue();
         $this->puts  = new AVarMutableQueue();
@@ -165,9 +165,9 @@ $drainVar = function($util, $avar) use ($AVar_EMPTY, $takeHead, $runEff) {
         $rsize = $rs->size;
 
         if ($avar->error !== null) {
-            $value = $util->left($avar->error);
+            $value = ($util->left)($avar->error);
             while ($p = $takeHead($ps)) {
-                $runEff($p->value->cb($value));
+                $runEff(($p->cb)($value));
             }
             while ($r = $takeHead($rs)) {
                 $runEff($r($value));
@@ -179,22 +179,22 @@ $drainVar = function($util, $avar) use ($AVar_EMPTY, $takeHead, $runEff) {
         }
 
         if ($value === $AVar_EMPTY && ($p = $takeHead($ps))) {
-            $avar->value = $value = $p->value->value;
+            $avar->value = $value = $p->value;
         }
 
         if ($value !== $AVar_EMPTY) {
             $t = $takeHead($ts);
             while ($rsize-- && ($r = $takeHead($rs))) {
-                $runEff($r($util->right($value)));
+                $runEff($r(($util->right)($value)));
             }
             if ($t !== null) {
                 $avar->value = $AVar_EMPTY;
-                $runEff($t($util->right($value)));
+                $runEff($t(($util->right)($value)));
             }
         }
 
         if ($p !== null) {
-            $runEff($p->value->cb($util->right(null)));
+            $runEff(($p->cb)(($util->right)(null)));
         }
 
         if (($avar->value === $AVar_EMPTY && $ps->size === 0) || ($avar->value !== $AVar_EMPTY && $ts->size === 0)) {
@@ -275,7 +275,7 @@ $exports['_tryTakeVar'] = function ($util, $avar) use ($AVar_EMPTY, $drainVar) {
         } else {
             $avar->value = $AVar_EMPTY;
             $drainVar($util, $avar);
-            return $util->just($value);
+            return ($util->just)($value);
         }
     };
 };
@@ -285,7 +285,7 @@ $exports['_tryReadVar'] = function ($util, $avar) use ($AVar_EMPTY) {
         if ($avar->value === $AVar_EMPTY) {
             return $util->nothing;
         } else {
-            return $util->just($avar->value);
+            return ($util->just)($avar->value);
         }
     };
 };
@@ -293,12 +293,12 @@ $exports['_tryReadVar'] = function ($util, $avar) use ($AVar_EMPTY) {
 $exports['_status'] = function ($util, $avar) use ($AVar_EMPTY) {
     return function () use ($util, $avar, $AVar_EMPTY) {
         if ($avar->error) {
-            return $util->killed($avar->error);
+            return ($util->killed)($avar->error);
         }
         if ($avar->value === $AVar_EMPTY) {
             return $util->empty;
         }
-        return $util->filled($avar->value);
+        return ($util->filled)($avar->value);
     };
 };
 
